@@ -69,3 +69,9 @@ textarea {
 .visible {
     display: block;
 }
+#message{
+    display: none;
+    padding: 10px; 
+    border: 1px solid; 
+    margin-top: 10px;
+}
