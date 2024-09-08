@@ -10,40 +10,41 @@ $pageUrl = "https://7c78-41-85-163-249.ngrok-free.app"; // L'URL canonique de la
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($title); ?></title>
-    
-    <!-- Balises Open Graph pour le partage sur les réseaux sociaux -->
     <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($description); ?>">
     <meta property="og:url" content="<?php echo htmlspecialchars($pageUrl); ?>">
-    
-    <!-- Autres balises meta, styles, et scripts -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Bouton pour se connecter avec Facebook -->
-    <button onclick="fbLogin()">Se connecter avec Facebook</button>
+    
+<div class="container">
+        <h1>Publier sur Facebook</h1>
+        <!-- Bouton pour se connecter avec Facebook -->
+        <button id="fbLoginButton" onclick="fbLogin()">Se connecter avec Facebook</button>
 
-    <!-- Formulaire de publication -->
-    <form id="publicationForm" style="display: none;" method="POST" action="api.php">
-        <label for="title">Titre:</label>
-        <input type="text" id="title" name="title" required><br><br>
+        <!-- Formulaire de publication -->
+        <form id="publicationForm" class="hidden" method="POST" action="api.php">
+            <label for="title">Titre:</label>
+            <input type="text" id="title" name="title" placeholder="Entrez le titre" required>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea><br><br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Entrez la description" required></textarea>
 
-        <button type="button" onclick="shareOnFacebook()">Partager sur Facebook</button>
-    </form>
+            <button type="button" onclick="shareOnFacebook()">Partager sur Facebook</button>
+        </form>
+    </div>
 
-    <!-- SDK Facebook pour la connexion -->
+    <!-- SDK Facebook et script JavaScript -->
     <script>
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '358103917374281',  // Remplacez par votre App ID
-          cookie     : true,           // Active l'utilisation des cookies
-          xfbml      : true,           // Active le parsing des plugins sociaux
-          version    : 'v16.0'         // Version actuelle de l'API Graph
+          cookie     : true,           
+          xfbml      : true,           
+          version    : 'v16.0'         
         });
 
-        FB.AppEvents.logPageView();   // Enregistre une vue de la page
+        FB.AppEvents.logPageView();   
 
         // Vérifie l'état de connexion lors du chargement
         FB.getLoginStatus(function(response) {
@@ -64,8 +65,10 @@ $pageUrl = "https://7c78-41-85-163-249.ngrok-free.app"; // L'URL canonique de la
         FB.login(function(response) {
           if (response.status === 'connected') {
             // L'utilisateur est connecté, afficher le formulaire
-            document.getElementById('publicationForm').style.display = 'block';
-            console.log('Utilisateur connecté', response);
+            document.getElementById('publicationForm').classList.remove('hidden');
+            document.getElementById('publicationForm').classList.add('visible');
+            document.getElementById('fbLoginButton').classList.add('hidden');
+            console.log('Utilisateur connecté');
           } else {
             console.log('Utilisateur non connecté');
           }
@@ -92,13 +95,14 @@ $pageUrl = "https://7c78-41-85-163-249.ngrok-free.app"; // L'URL canonique de la
         .catch(error => console.error('Erreur:', error));
       }
 
-
       // Fonction de rappel pour vérifier l'état de connexion
       function statusChangeCallback(response) {
         if (response.status === 'connected') {
-          document.getElementById('publicationForm').style.display = 'block';
+          document.getElementById('publicationForm').classList.remove('hidden');
+          document.getElementById('publicationForm').classList.add('visible');
+          document.getElementById('fbLoginButton').classList.add('hidden');
         } else {
-          document.getElementById('publicationForm').style.display = 'none';
+          document.getElementById('publicationForm').classList.add('hidden');
         }
       }
     </script>
